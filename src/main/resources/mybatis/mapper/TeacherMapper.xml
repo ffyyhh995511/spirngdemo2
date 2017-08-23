@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.fyh.spirngdemo2.mapper.TeacherMapper">
+  <resultMap id="BaseResultMap" type="org.fyh.spirngdemo2.entity.Teacher">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  
+  <!-- 继承 -->
+  <resultMap extends="BaseResultMap" id="BaseResultMapVo" type="org.fyh.spirngdemo2.vo.TeacherVo">
+  		 <!-- 一对一 -->
+  		 <association property="teacherInfo" javaType="org.fyh.spirngdemo2.entity.TeacherInfo">
+             <id property="id" column="ti_id"/>
+             <result property="address" column="ti_address"/>
+             <result property="workYear" column="ti_workYear"/>
+             <result property="favorite" column="ti_favorite"/>
+             <result property="marry" column="ti_marry"/>
+         </association>
+  		 
+  		 <!-- ofType指定students集合中的对象类型 -->
+  		 <!-- 一对多 -->
+         <collection property="students" ofType="org.fyh.spirngdemo2.entity.Student">
+             <id property="id" column="s_id"/>
+             <result property="name" column="s_name"/>
+             <result property="createTime" column="s_create_time"/>
+         </collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, name, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teacher
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from teacher
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="org.fyh.spirngdemo2.entity.Teacher">
+    insert into teacher (id, name, create_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.fyh.spirngdemo2.entity.Teacher">
+    insert into teacher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.fyh.spirngdemo2.entity.Teacher">
+    update teacher
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.fyh.spirngdemo2.entity.Teacher">
+    update teacher
+    set name = #{name,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="searchByName" resultMap="BaseResultMap">
+  select 
+    <include refid="Base_Column_List" />
+    from teacher
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+  	insert into teacher (id, name, create_time) values 
+    <foreach collection="list" index="index" item="item" open="" close="" separator=",">
+    	(#{item.id,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  
+  
+   <delete id="deleteBatch" parameterType="java.util.List">  
+        delete from teacher where id in
+        <foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>  
+   </delete>
+  
+  
+  <select id="queryDetails" resultMap="BaseResultMapVo">
+   	SELECT 
+   	t.id,
+   	t.name,
+   	t.create_time,
+   	s.id as s_id,
+   	s.name as s_name,
+   	s.create_time as s_create_time,
+   	ti.id as ti_id,
+  	ti.address as ti_address,
+  	ti.work_year as ti_work_year,
+  	ti.favorite as ti_favorite,
+  	ti.marry as ti_marry
+   	from teacher t LEFT JOIN student s on t.id = s.teacher_id
+   	LEFT JOIN teacher_info ti on ti.teacher_id = t.id;
+   </select>  
+  
+</mapper>
