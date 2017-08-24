@@ -6,11 +6,16 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.fyh.spirngdemo2.commons.OpenPage;
 import org.fyh.spirngdemo2.entity.Teacher;
 import org.fyh.spirngdemo2.mapper.TeacherMapper;
 import org.fyh.spirngdemo2.util.UUIDUtil;
 import org.fyh.spirngdemo2.vo.TeacherVo;
 import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 @Service
 public class TeacherService {
 	
@@ -64,6 +69,15 @@ public class TeacherService {
 	 */
 	public List<TeacherVo> queryWithRelevanceDetails(){
 		return teacherMapper.queryDetails();
+	}
+
+	public PageInfo<Teacher> pageQuery(Integer pageNum,Integer pageSize) {
+		//获取第1页，10条内容，默认查询总数count
+	    PageHelper.startPage(pageNum, pageSize);
+
+	    //紧跟着的第一个select方法会被分页
+	    List<Teacher> list = teacherMapper.pageQuery();
+	    return new PageInfo<Teacher>(list);
 	}
 	
 	

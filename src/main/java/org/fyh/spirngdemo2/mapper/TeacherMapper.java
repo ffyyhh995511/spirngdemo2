@@ -26,4 +26,6 @@ public interface TeacherMapper {
 	int deleteBatch(String array[]);
     
     List<TeacherVo> queryDetails();
+
+	List<Teacher> pageQuery();
 }
