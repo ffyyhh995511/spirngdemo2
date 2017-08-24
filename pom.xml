@@ -73,8 +73,7 @@
 		<dependency>
 		    <groupId>commons-collections</groupId>
 		    <artifactId>commons-collections</artifactId>
-		    <version>3.2.2</version>
-		</dependency>
+		    </dependency>
 		
 		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 		<dependency>
@@ -87,7 +86,6 @@
 		<dependency>
 		    <groupId>commons-beanutils</groupId>
 		    <artifactId>commons-beanutils</artifactId>
-		    <version>1.9.3</version>
 		</dependency>
 		
 		<!-- mybatis分页插件 -->
@@ -96,6 +94,17 @@
 			<artifactId>pagehelper</artifactId>
 			<version>4.1.6</version>
 		</dependency>
+		
+		<dependency>  
+            <groupId>org.springframework.boot</groupId>  
+            <artifactId>spring-boot-starter-data-jpa</artifactId>  
+        </dependency>
+        
+        <dependency>  
+            <groupId>com.alibaba</groupId>  
+            <artifactId>druid</artifactId>  
+            <version>1.0.25</version>  
+        </dependency>  
 
 	</dependencies>
 
