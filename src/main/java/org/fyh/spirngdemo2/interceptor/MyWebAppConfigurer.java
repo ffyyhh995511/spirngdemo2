@@ -14,6 +14,8 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter{
         // addPathPatterns 用于添加拦截规则
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(new BaseController()).addPathPatterns("/**");
+        //拦截除了hello之外的接口
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/hello/**");
         super.addInterceptors(registry);
 	}
 
