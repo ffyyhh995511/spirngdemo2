@@ -203,10 +203,10 @@ public class BaseController implements HandlerInterceptor{
 	public boolean isParamsNull(Object ...object){
 		for (Object obj : object) {
 			if(obj == null){
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 }
