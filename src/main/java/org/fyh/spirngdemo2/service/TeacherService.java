@@ -22,6 +22,11 @@ public class TeacherService {
 	@Resource
 	TeacherMapper teacherMapper;
 	
+	public int save(Teacher teacher){
+		teacher.setCreateTime(new Date());
+		return teacherMapper.insert(teacher);
+	}
+	
 	/**
 	 * 测试使用mybitas的参数，不用之前的对象作为参数查询
 	 * @param name

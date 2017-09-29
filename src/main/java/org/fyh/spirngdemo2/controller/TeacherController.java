@@ -8,6 +8,7 @@ import org.fyh.spirngdemo2.entity.Teacher;
 import org.fyh.spirngdemo2.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,28 @@ public class TeacherController extends BaseController{
 	
 	@Resource
 	TeacherService teacherService;
+	
+	/**
+	 * 测试客户端发送json数据到后端
+	 
+	 postman --> header --> 设置 Content-Type = application/json --> body --> raw --> 下面的json数据
+	 {
+        "id": "233",
+        "name": "222222222222222",
+        "createTime": 1506665480575
+     }
+     
+	 * @param teacher
+	 * @return
+	 */
+	@RequestMapping(value="/save",method=RequestMethod.POST)
+	public Object save(@RequestBody Teacher teacher){
+		int save = teacherService.save(teacher);
+		if(save > 0){
+			return responseSuccess("保存成功",teacher);
+		}
+		return responseFail("保存失败");
+	}
 	
 	/**
 	 * 测试使用mybitas的参数，不用之前的对象作为参数查询
