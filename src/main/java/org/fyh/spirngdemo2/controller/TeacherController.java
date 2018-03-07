@@ -3,6 +3,7 @@ package org.fyh.spirngdemo2.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.fyh.spirngdemo2.entity.Teacher;
 import org.fyh.spirngdemo2.service.TeacherService;
@@ -82,7 +83,8 @@ public class TeacherController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value="/queryWithRelevanceDetails",method=RequestMethod.GET)
-	public Object queryWithRelevanceDetails(){
+	public Object queryWithRelevanceDetails(HttpServletResponse res){
+		res.setHeader("Access-Control-Allow-Origin", "*");
 		return responseSuccess(teacherService.queryWithRelevanceDetails());
 	}
 	
